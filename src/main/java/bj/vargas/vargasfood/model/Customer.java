@@ -7,11 +7,10 @@ public class Customer {
 	private String phone;
 	private boolean active = false;
 
-	public Customer(String name, String mail, String phone, boolean active) {
+	public Customer(String name, String mail, String phone) {
 		this.name = name;
 		this.mail = mail;
 		this.phone = phone;
-		this.active = active;
 	}
 
 	public String getName() {

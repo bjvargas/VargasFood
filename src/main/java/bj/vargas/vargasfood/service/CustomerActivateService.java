@@ -1,18 +1,22 @@
 package bj.vargas.vargasfood.service;
 
+import bj.vargas.vargasfood.interfaces.Notify;
 import bj.vargas.vargasfood.model.Customer;
-import bj.vargas.vargasfood.notify.NotifyMail;
 import org.springframework.stereotype.Component;
 
 @Component
 public class CustomerActivateService {
 
-	private NotifyMail notifyMail;
-	
-	public void active(Customer customer) {
+	private final Notify notify;
+
+	public CustomerActivateService(final Notify notify) {
+		this.notify = notify;
+	}
+
+	public void active(final Customer customer) {
 		customer.active();
 
-		notifyMail.notify(customer, "Your register is active!");
+		notify.notify(customer, "Your register is active!");
 	}
 	
 }
