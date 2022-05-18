@@ -2,9 +2,10 @@ package bj.vargas.vargasfood.notify;
 
 import bj.vargas.vargasfood.interfaces.Notify;
 import bj.vargas.vargasfood.model.Customer;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
-@Primary
+@Qualifier("mail")
 @Component
 public class NotifyMail implements Notify {
 

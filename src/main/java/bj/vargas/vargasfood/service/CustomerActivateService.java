@@ -3,6 +3,7 @@ package bj.vargas.vargasfood.service;
 import bj.vargas.vargasfood.interfaces.Notify;
 import bj.vargas.vargasfood.model.Customer;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -10,6 +11,7 @@ import java.util.List;
 @Component
 public class CustomerActivateService {
 
+	@Qualifier("mail")
 	@Autowired
 	private Notify notifier;
 
