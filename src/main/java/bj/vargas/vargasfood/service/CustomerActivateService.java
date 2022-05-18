@@ -4,7 +4,6 @@ import bj.vargas.vargasfood.interfaces.Notify;
 import bj.vargas.vargasfood.model.Customer;
 import org.springframework.stereotype.Component;
 
-@Component
 public class CustomerActivateService {
 
 	private final Notify notify;
