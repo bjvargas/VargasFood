@@ -1,5 +1,7 @@
 package bj.vargas.vargasfood.service;
 
+import bj.vargas.vargasfood.config.NotifierType;
+import bj.vargas.vargasfood.config.UrgencyLevel;
 import bj.vargas.vargasfood.interfaces.Notify;
 import bj.vargas.vargasfood.model.Customer;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,8 +13,8 @@ import java.util.List;
 @Component
 public class CustomerActivateService {
 
-	@Qualifier("mail")
 	@Autowired
+	@NotifierType(UrgencyLevel.HIGH)
 	private Notify notifier;
 
 	public void active(final Customer customer) {
