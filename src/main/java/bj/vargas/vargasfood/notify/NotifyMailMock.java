@@ -7,16 +7,16 @@ import bj.vargas.vargasfood.model.Customer;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
-@Profile("prod")
+@Profile("dev")
 @NotifierType(UrgencyLevel.HIGH)
 @Component
-public class NotifyMail implements Notify {
+public class NotifyMailMock implements Notify {
 
 
 	@Override
 	public void notify(final Customer customer, String message) {
 
-		System.out.printf("Notifying %s by mail %s: %s\n",
+		System.out.printf("Mocking %s by mail %s: %s\n",
 				customer.getName(), customer.getMail(), message);
 	}
 
