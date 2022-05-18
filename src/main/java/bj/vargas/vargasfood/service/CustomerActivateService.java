@@ -5,23 +5,20 @@ import bj.vargas.vargasfood.model.Customer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 @Component
 public class CustomerActivateService {
 
-	private  Notify notify;
-
-	public CustomerActivateService(final Notify notify) {
-		this.notify = notify;
-	}
+	@Autowired
+	private List<Notify> notifiers;
 
 	public void active(final Customer customer) {
 		customer.active();
 
-		notify.notify(customer, "Your register is active!");
+		for (Notify notify : notifiers) {
+			notify.notify(customer, "Your register is active!");
+		}
 	}
 
-	@Autowired
-	public void setNotify(final Notify notify) {
-		this.notify = notify;
-	}
 }

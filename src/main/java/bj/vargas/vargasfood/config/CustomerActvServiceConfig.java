@@ -6,6 +6,6 @@ import bj.vargas.vargasfood.service.CustomerActivateService;
 public class CustomerActvServiceConfig {
 
     public CustomerActivateService activateService(Notify notify) {
-        return new CustomerActivateService(notify);
+        return new CustomerActivateService();
     }
 }
