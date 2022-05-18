@@ -11,14 +11,13 @@ import java.util.List;
 public class CustomerActivateService {
 
 	@Autowired
-	private List<Notify> notifiers;
+	private Notify notifier;
 
 	public void active(final Customer customer) {
 		customer.active();
 
-		for (Notify notify : notifiers) {
-			notify.notify(customer, "Your register is active!");
-		}
+		notifier.notify(customer, "Your register is active!");
+
 	}
 
 }
