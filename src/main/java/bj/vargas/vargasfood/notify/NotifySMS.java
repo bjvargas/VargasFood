@@ -5,9 +5,11 @@ import bj.vargas.vargasfood.config.UrgencyLevel;
 import bj.vargas.vargasfood.interfaces.Notify;
 import bj.vargas.vargasfood.model.Customer;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 @NotifierType(UrgencyLevel.DEFAULT)
 @Component
+@Profile("dev")
 public class NotifySMS implements Notify {
 
 

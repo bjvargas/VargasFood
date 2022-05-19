@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class NotifierListener {
 
-    @NotifierType(UrgencyLevel.DEFAULT)
+    @NotifierType(UrgencyLevel.HIGH)
     @Autowired
     private Notify notify;
 
