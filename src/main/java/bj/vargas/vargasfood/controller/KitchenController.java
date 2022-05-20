@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
+import javax.transaction.Transactional;
 import java.util.List;
 
 @RestController
@@ -19,5 +20,11 @@ public class KitchenController {
         TypedQuery<Kitchen> query = entityManager.createQuery("from Kitchen", Kitchen.class);
         return query.getResultList();
     }
+
+    @Transactional
+    public Kitchen create(Kitchen kitchen) {
+        return entityManager.merge(kitchen);
+    }
+
 
 }

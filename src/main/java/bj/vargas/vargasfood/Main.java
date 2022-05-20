@@ -16,6 +16,16 @@ public class Main {
                 .run(args);
 
         KitchenController kitchenController = applicationContext.getBean(KitchenController.class);
+
+        Kitchen japonesa = new Kitchen();
+        japonesa.setName("Japonesa");
+
+        Kitchen brasileira = new Kitchen();
+        japonesa.setName("Brasileira");
+
+        kitchenController.create(japonesa);
+        kitchenController.create(brasileira);
+
         List<Kitchen> list = kitchenController.list();
         list.stream().map(kitchen -> kitchen.getName()).forEach(System.out::println);
     }
