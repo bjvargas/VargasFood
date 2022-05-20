@@ -1,7 +1,7 @@
 package bj.vargas.vargasfood.service;
 
 import bj.vargas.vargasfood.event.CustomerActivateEvent;
-import bj.vargas.vargasfood.model.Customer;
+import bj.vargas.vargasfood.domain.model.Customer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Component;

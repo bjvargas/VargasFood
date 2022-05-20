@@ -4,7 +4,7 @@ import bj.vargas.vargasfood.config.NotifierProperties;
 import bj.vargas.vargasfood.config.NotifierType;
 import bj.vargas.vargasfood.config.UrgencyLevel;
 import bj.vargas.vargasfood.interfaces.Notify;
-import bj.vargas.vargasfood.model.Customer;
+import bj.vargas.vargasfood.domain.model.Customer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;

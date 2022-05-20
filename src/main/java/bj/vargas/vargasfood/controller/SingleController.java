@@ -1,6 +1,6 @@
 package bj.vargas.vargasfood.controller;
 
-import bj.vargas.vargasfood.model.Customer;
+import bj.vargas.vargasfood.domain.model.Customer;
 import bj.vargas.vargasfood.service.CustomerActivateService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
