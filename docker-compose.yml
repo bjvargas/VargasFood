@@ -1,0 +1,25 @@
+version: "3"
+services:
+  vargas-food:
+    #container_name: vargas-food
+    image: vargas-food
+    restart: always
+    build: .
+    ports:
+      - 8080:8080
+    environment:
+      MYSQL_HOST: mysqldb
+      MYSQL_USER: root
+      MYSQL_PASSWORD: root
+      MYSQL_PORT: 3306
+
+  mysqldb:
+    container_name: mysqldb
+    image: mysql
+    volumes:
+      - /home/bruno/Bruno/ToTrain/VargasFood/db:/var/lib/mysql
+    ports:
+      - 3307:3306
+    environment:
+      MYSQL_DATABASE: vargas_food
+      MYSQL_ROOT_PASSWORD: root
