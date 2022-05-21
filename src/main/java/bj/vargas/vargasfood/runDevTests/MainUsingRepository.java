@@ -76,6 +76,16 @@ public class MainUsingRepository {
          * Removing a kitchen
          */
         System.out.println("Removing a kitchen:");
+
+        RestaurantRepository restaurantRepository = applicationContext.getBean(RestaurantRepository.class);
+        Restaurant deletedRestaurant = new Restaurant();
+        deletedRestaurant.setId(1L);
+        restaurantRepository.remove(deletedRestaurant);
+
+        Restaurant deletedRestaurant2 = new Restaurant();
+        deletedRestaurant2.setId(2L);
+        restaurantRepository.remove(deletedRestaurant2);
+
         Kitchen deletedKitchen = new Kitchen();
         deletedKitchen.setId(1L);
         kitchenRepository.remove(deletedKitchen);
@@ -89,19 +99,25 @@ public class MainUsingRepository {
 
         System.out.println("Instance of restaurant component: ");
         RestaurantRepository restaurantRepository = applicationContext.getBean(RestaurantRepository.class);
+        KitchenRepository kitchenRepository = applicationContext.getBean(KitchenRepository.class);
 
         /**'
          * Creating
          */
         System.out.println("Creating restaurants: ");
+        Kitchen kitchen = new Kitchen();
+        kitchen.setName("TestOneToMany");
+        kitchen = kitchenRepository.save(kitchen);
 
         Restaurant sammFood = new Restaurant();
         sammFood.setName("Sam Food");
         sammFood.setShippingFee(BigDecimal.TEN);
+        sammFood.setKitchen(kitchen);
 
         Restaurant barVargas = new Restaurant();
         barVargas.setName("Bar Vargas");
         barVargas.setShippingFee(BigDecimal.TEN);
+        barVargas.setKitchen(kitchen);
 
         restaurantRepository.save(sammFood);
         restaurantRepository.save(barVargas);
@@ -112,34 +128,34 @@ public class MainUsingRepository {
          */
         System.out.println("Listing restaurants: ");
         List<Restaurant> list = restaurantRepository.list();
-        list.stream().map(restaurant -> restaurant.getName()).forEach(System.out::println);
+        list.stream().map(restaurant -> restaurant.getName() + ", Restaurant: ---> " + restaurant.getKitchen().getName()).forEach(System.out::println);
 
         /**
          * get One item by id
          */
         System.out.println("Show first restaurant: ");
 
-        System.out.println(restaurantRepository.getRestaurant(1L).getName());
+        System.out.println(restaurantRepository.getRestaurant(3L).getName());
 
         /**
          * Updating a restaurant
          */
         System.out.println("Show restaurant updated: ");
         Restaurant updateThaiGourm = new Restaurant();
-        updateThaiGourm.setId(1L);
+        updateThaiGourm.setId(3L);
         updateThaiGourm.setName("Thai not Gourmet any more");
         updateThaiGourm.setShippingFee(BigDecimal.ONE);
 
         restaurantRepository.save(updateThaiGourm);
 
-        System.out.println(restaurantRepository.getRestaurant(1L).getName());
+        System.out.println(restaurantRepository.getRestaurant(3L).getName());
 
         /**
          * Removing a restaurant
          */
         System.out.println("Removing a restaurant:");
         Restaurant deletedRestaurant = new Restaurant();
-        deletedRestaurant.setId(1L);
+        deletedRestaurant.setId(3L);
         restaurantRepository.remove(deletedRestaurant);
 
         List<Restaurant> list2 = restaurantRepository.list();
