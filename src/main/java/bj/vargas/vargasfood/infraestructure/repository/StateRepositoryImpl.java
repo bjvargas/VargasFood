@@ -1,7 +1,9 @@
 package bj.vargas.vargasfood.infraestructure.repository;
 
 import bj.vargas.vargasfood.domain.model.Kitchen;
+import bj.vargas.vargasfood.domain.model.State;
 import bj.vargas.vargasfood.domain.repository.KitchenRepository;
+import bj.vargas.vargasfood.domain.repository.StateRepository;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.EntityManager;
@@ -11,31 +13,31 @@ import javax.transaction.Transactional;
 import java.util.List;
 
 @Component
-public class KitchenRepositoryImpl implements KitchenRepository {
+public class StateRepositoryImpl implements StateRepository {
 
     @PersistenceContext
     private EntityManager entityManager;
 
     @Override
-    public List<Kitchen> list() {
-        TypedQuery<Kitchen> query = entityManager.createQuery("from Kitchen", Kitchen.class);
+    public List<State> list() {
+        TypedQuery<State> query = entityManager.createQuery("from State", State.class);
         return query.getResultList();    }
 
     @Override
-    public Kitchen getKitchen(Long id) {
-        return entityManager.find(Kitchen.class, id);
+    public State getState(Long id) {
+        return entityManager.find(State.class, id);
     }
 
     @Override
     @Transactional
-    public Kitchen save(Kitchen kitchen) {
-        return entityManager.merge(kitchen);
+    public State save(State state) {
+        return entityManager.merge(state);
     }
 
     @Override
     @Transactional
-    public void remove(Kitchen kitchen) {
-        kitchen = getKitchen(kitchen.getId());
-        entityManager.remove(kitchen);
+    public void remove(State state) {
+        state = getState(state.getId());
+        entityManager.remove(state);
     }
 }
