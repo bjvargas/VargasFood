@@ -2,9 +2,11 @@ package bj.vargas.vargasfood.controller;
 
 import bj.vargas.vargasfood.domain.model.Kitchen;
 import bj.vargas.vargasfood.domain.repository.KitchenRepository;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.EntityManager;
@@ -33,10 +35,32 @@ public class KitchenController {
         return kitchenRepository.list();
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<Kitchen> getKitchenRest(@PathVariable Long id) {
+        Kitchen kitchen = kitchenRepository.getKitchen(id);
+        if (kitchen != null) {
+            return ResponseEntity.ok(kitchen);
+        }
+        return ResponseEntity.notFound().build();
+    }
+
     @PostMapping
     @ResponseStatus(CREATED)
     public Kitchen createRest(@RequestBody Kitchen kitchen) {
        return kitchenRepository.save(kitchen);
+    }
+    @PutMapping("/{id}")
+    public ResponseEntity<Kitchen> updateRest(@PathVariable Long id,
+                                              @RequestBody Kitchen kitchen) {
+        Kitchen kitchenActual = kitchenRepository.getKitchen(id);
+
+        if (kitchen == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        BeanUtils.copyProperties(kitchen, kitchenActual, "id");
+        kitchenRepository.save(kitchenActual);
+        return ResponseEntity.ok(kitchenActual);
     }
 
     public List<Kitchen> list() {
