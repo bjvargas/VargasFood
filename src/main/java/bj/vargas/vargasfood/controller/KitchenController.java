@@ -4,6 +4,7 @@ import bj.vargas.vargasfood.domain.model.Kitchen;
 import bj.vargas.vargasfood.domain.repository.KitchenRepository;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +16,7 @@ import javax.persistence.TypedQuery;
 import javax.transaction.Transactional;
 import java.util.List;
 
+import static org.springframework.http.HttpStatus.CONFLICT;
 import static org.springframework.http.HttpStatus.CREATED;
 
 @RestController
@@ -54,13 +56,26 @@ public class KitchenController {
                                               @RequestBody Kitchen kitchen) {
         Kitchen kitchenActual = kitchenRepository.getKitchen(id);
 
-        if (kitchen == null) {
-            return ResponseEntity.notFound().build();
+        if (kitchen != null) {
+            BeanUtils.copyProperties(kitchen, kitchenActual, "id");
+            kitchenRepository.save(kitchenActual);
+            return ResponseEntity.ok(kitchenActual);
         }
-
-        BeanUtils.copyProperties(kitchen, kitchenActual, "id");
-        kitchenRepository.save(kitchenActual);
-        return ResponseEntity.ok(kitchenActual);
+        return ResponseEntity.notFound().build();
+    }
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Kitchen> deleteRest(@PathVariable Long id) {
+       try {
+           Kitchen kitchen = kitchenRepository.getKitchen(id);
+           if (kitchen != null) {
+               kitchenRepository.remove(kitchen);
+               return ResponseEntity.noContent().build();
+           }
+           return ResponseEntity.notFound().build();
+       } catch (DataIntegrityViolationException e) {
+           //Need this catch cause eventually some kitchens has FKs.
+           return ResponseEntity.status(CONFLICT).build();
+       }
     }
 
     public List<Kitchen> list() {
