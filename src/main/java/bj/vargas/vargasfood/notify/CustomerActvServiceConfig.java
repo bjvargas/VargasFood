@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Configuration;
 public class CustomerActvServiceConfig {
 
     @Bean
-    public CustomerActivateService activateService(Notify notify) {
-        return new CustomerActivateService(notify);
+    public CustomerActivateService activateService() {
+        return new CustomerActivateService();
     }
 }

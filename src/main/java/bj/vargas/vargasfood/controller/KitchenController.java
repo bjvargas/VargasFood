@@ -3,10 +3,9 @@ package bj.vargas.vargasfood.controller;
 import bj.vargas.vargasfood.domain.model.Kitchen;
 import bj.vargas.vargasfood.domain.repository.KitchenRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -14,13 +13,13 @@ import javax.persistence.TypedQuery;
 import javax.transaction.Transactional;
 import java.util.List;
 
+import static org.springframework.http.HttpStatus.CREATED;
+
 @RestController
 @RequestMapping("/kitchens")
 public class KitchenController {
-
     @PersistenceContext
     private EntityManager entityManager;
-
     @Autowired
     private KitchenRepository kitchenRepository;
 
@@ -34,6 +33,11 @@ public class KitchenController {
         return kitchenRepository.list();
     }
 
+    @PostMapping
+    @ResponseStatus(CREATED)
+    public Kitchen createRest(@RequestBody Kitchen kitchen) {
+       return kitchenRepository.save(kitchen);
+    }
 
     public List<Kitchen> list() {
         TypedQuery<Kitchen> query = entityManager.createQuery("from Kitchen", Kitchen.class);
