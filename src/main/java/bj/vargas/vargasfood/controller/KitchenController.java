@@ -7,8 +7,6 @@ import bj.vargas.vargasfood.domain.repository.KitchenRepository;
 import bj.vargas.vargasfood.domain.service.KitchenService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -32,13 +30,8 @@ public class KitchenController {
     @Autowired
     private KitchenService kitchenService;
 
-    @GetMapping(produces = MediaType.APPLICATION_XML_VALUE)
+    @GetMapping
     public List<Kitchen> listRestJSON() {
-        return kitchenRepository.list();
-    }
-
-    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<Kitchen> listRestXML() {
         return kitchenRepository.list();
     }
 
@@ -88,8 +81,8 @@ public class KitchenController {
     }
 
     @Transactional
-    public Kitchen create(final Kitchen kitchen) {
-        return entityManager.merge(kitchen);
+    public void create(final Kitchen kitchen) {
+        entityManager.merge(kitchen);
     }
 
     public Kitchen getKitchen(final Long id) {
