@@ -1,10 +1,8 @@
 package bj.vargas.vargasfood.infraestructure.repository;
 
-import bj.vargas.vargasfood.domain.model.Kitchen;
 import bj.vargas.vargasfood.domain.model.State;
-import bj.vargas.vargasfood.domain.repository.KitchenRepository;
 import bj.vargas.vargasfood.domain.repository.StateRepository;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -12,7 +10,7 @@ import javax.persistence.TypedQuery;
 import javax.transaction.Transactional;
 import java.util.List;
 
-@Component
+@Repository
 public class StateRepositoryImpl implements StateRepository {
 
     @PersistenceContext

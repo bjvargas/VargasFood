@@ -3,7 +3,7 @@ package bj.vargas.vargasfood.infraestructure.repository;
 import bj.vargas.vargasfood.domain.model.Kitchen;
 import bj.vargas.vargasfood.domain.repository.KitchenRepository;
 import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -11,7 +11,7 @@ import javax.persistence.TypedQuery;
 import javax.transaction.Transactional;
 import java.util.List;
 
-@Component
+@Repository
 public class KitchenRepositoryImpl implements KitchenRepository {
 
     @PersistenceContext
