@@ -1,14 +1,11 @@
 package bj.vargas.vargasfood.domain.repository;
 
 import bj.vargas.vargasfood.domain.model.Kitchen;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-import java.util.List;
+@Repository
+public interface KitchenRepository extends JpaRepository<Kitchen, Long> {
 
-public interface KitchenRepository  {
-
-    List<Kitchen> list();
-    Kitchen getKitchen(Long id);
-    Kitchen save(Kitchen kitchen);
-    void remove(Long id);
 
 }

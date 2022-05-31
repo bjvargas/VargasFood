@@ -32,12 +32,12 @@ public class KitchenController {
 
     @GetMapping
     public List<Kitchen> listRestJSON() {
-        return kitchenRepository.list();
+        return kitchenRepository.findAll();
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Kitchen> getKitchenRest(@PathVariable Long id) {
-        final Kitchen kitchen = kitchenRepository.getKitchen(id);
+        final Kitchen kitchen = kitchenRepository.getById(id);
         if (kitchen != null) {
             return ResponseEntity.ok(kitchen);
         }
@@ -53,7 +53,7 @@ public class KitchenController {
     @PutMapping("/{id}")
     public ResponseEntity<Kitchen> updateRest(@PathVariable final Long id,
                                               @RequestBody final Kitchen kitchen) {
-        final Kitchen kitchenActual = kitchenRepository.getKitchen(id);
+        final Kitchen kitchenActual = kitchenRepository.getById(id);
 
         if (kitchen != null) {
             BeanUtils.copyProperties(kitchen, kitchenActual, "id");

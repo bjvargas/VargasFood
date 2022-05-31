@@ -21,7 +21,7 @@ public class RestaurantService {
 
     public void delete(final Long id) {
         try {
-            restaurantRepository.remove(id);
+            restaurantRepository.deleteById(id);
         } catch (EmptyResultDataAccessException e) {
             throw new EntityNotFound(String.format("There is no Kitchen with code %d", id));
         } catch (DataIntegrityViolationException e) {
@@ -31,7 +31,7 @@ public class RestaurantService {
 
     public Restaurant save(@RequestBody final Restaurant restaurant) {
         final Long idKitchen = restaurant.getKitchen().getId();
-        final Kitchen kitchen = kitchenRepository.getKitchen(idKitchen);
+        final Kitchen kitchen = kitchenRepository.getById(idKitchen);
         if (kitchen == null) {
             throw new EntityNotFound("Kitchen not found");
         }

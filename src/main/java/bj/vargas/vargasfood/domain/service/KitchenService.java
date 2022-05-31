@@ -23,7 +23,7 @@ public class KitchenService {
 
     public void delete(final Long id) {
         try {
-            kitchenRepository.remove(id);
+            kitchenRepository.deleteById(id);
         } catch (EmptyResultDataAccessException e) {
             throw new EntityNotFound(String.format("There is no Kitchen with code %d", id));
         } catch (DataIntegrityViolationException e) {

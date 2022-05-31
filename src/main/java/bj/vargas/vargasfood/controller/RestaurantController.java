@@ -33,12 +33,12 @@ public class RestaurantController {
 
     @GetMapping
     public List<Restaurant> list() {
-        return restaurantRepository.list();
+        return restaurantRepository.findAll();
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Restaurant> getRestaurant(@PathVariable final Long id) {
-        final Restaurant restaurant = restaurantRepository.getRestaurant(id);
+        final Restaurant restaurant = restaurantRepository.getById(id);
         if (restaurant != null) {
             return ResponseEntity.ok(restaurant);
         }
@@ -58,7 +58,7 @@ public class RestaurantController {
     @PutMapping("/{id}")
     public ResponseEntity<?> update(@PathVariable final Long id,
                                     @RequestBody final Restaurant restaurant) {
-        final Restaurant restaurantActual = restaurantRepository.getRestaurant(id);
+        final Restaurant restaurantActual = restaurantRepository.getById(id);
 
         if (restaurant != null) {
             BeanUtils.copyProperties(restaurant, restaurantActual, "id");
@@ -75,7 +75,7 @@ public class RestaurantController {
     @PatchMapping
     public ResponseEntity<?> partialUpdate(@PathVariable final Long id,
                                            @RequestBody final Map<String, Object> fields) {
-        final Restaurant restaurantActual = restaurantRepository.getRestaurant(id);
+        final Restaurant restaurantActual = restaurantRepository.getById(id);
         if (restaurantActual == null) {
             return ResponseEntity.notFound().build();
         }

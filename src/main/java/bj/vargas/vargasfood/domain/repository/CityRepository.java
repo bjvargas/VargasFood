@@ -1,14 +1,10 @@
 package bj.vargas.vargasfood.domain.repository;
 
 import bj.vargas.vargasfood.domain.model.City;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-import java.util.List;
-
-public interface CityRepository {
-
-    List<City> list();
-    City getCity(Long id);
-    City save(City city);
-    void remove(City city);
+@Repository
+public interface CityRepository extends JpaRepository<City, Long> {
 
 }
