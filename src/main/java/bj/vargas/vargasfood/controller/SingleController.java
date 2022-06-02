@@ -19,10 +19,9 @@ public class SingleController {
 	@ResponseBody
 	public String hello() {
 
-		Customer bruno = new Customer("Bruno", "bruno_jaques@hotmail.com", "999999999");
+		final Customer bruno = new Customer("Bruno", "bruno_jaques@hotmail.com", "999999999");
 
 		activateService.active(bruno);
-
 
 		return "Hello!";
 	}

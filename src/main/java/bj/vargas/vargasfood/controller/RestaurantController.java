@@ -1,5 +1,6 @@
 package bj.vargas.vargasfood.controller;
 
+import bj.vargas.vargasfood.domain.exception.EntityIsUsed;
 import bj.vargas.vargasfood.domain.exception.EntityNotFound;
 import bj.vargas.vargasfood.domain.model.Kitchen;
 import bj.vargas.vargasfood.domain.model.Restaurant;
@@ -18,8 +19,9 @@ import org.springframework.web.bind.annotation.*;
 import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
-import static org.springframework.http.HttpStatus.CREATED;
+import static org.springframework.http.HttpStatus.*;
 
 @RestController
 @RequestMapping("/restaurants")
@@ -37,11 +39,8 @@ public class RestaurantController {
 
     @GetMapping("/{id}")
     public ResponseEntity<Restaurant> getRestaurant(@PathVariable final Long id) {
-        final Restaurant restaurant = restaurantRepository.getById(id);
-        if (restaurant != null) {
-            return ResponseEntity.ok(restaurant);
-        }
-        return ResponseEntity.notFound().build();
+        final Optional<Restaurant> restaurant = restaurantRepository.findById(id);
+        return restaurant.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @PostMapping
@@ -57,13 +56,13 @@ public class RestaurantController {
     @PutMapping("/{id}")
     public ResponseEntity<?> update(@PathVariable final Long id,
                                     @RequestBody final Restaurant restaurant) {
-        final Restaurant restaurantActual = restaurantRepository.getById(id);
+        final Optional<Restaurant> restaurantActual = restaurantRepository.findById(id);
 
-        if (restaurant != null) {
-            BeanUtils.copyProperties(restaurant, restaurantActual, "id");
+        if (restaurantActual.isPresent()) {
+            BeanUtils.copyProperties(restaurant, restaurantActual.get(), "id");
             try {
-                restaurantRepository.save(restaurantActual);
-                return ResponseEntity.ok(restaurantActual);
+                final Restaurant savedRestaurant = restaurantRepository.save(restaurantActual.get());
+                return ResponseEntity.ok(savedRestaurant);
             } catch (final EntityNotFound e) {
                 return ResponseEntity.badRequest().body(e.getMessage());
             }
@@ -71,15 +70,27 @@ public class RestaurantController {
         return ResponseEntity.notFound().build();
     }
 
-    @PatchMapping
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteRest(@PathVariable final Long id) {
+        try {
+            restaurantService.delete(id);
+            return ResponseEntity.noContent().build();
+        } catch (final EntityNotFound e) {
+            return ResponseEntity.status(NOT_FOUND).body(e.getMessage());
+        } catch (final EntityIsUsed e) {
+            return ResponseEntity.status(CONFLICT).body(e.getMessage());
+        }
+    }
+
+    @PatchMapping("/{id}")
     public ResponseEntity<?> partialUpdate(@PathVariable final Long id,
                                            @RequestBody final Map<String, Object> fields) {
-        final Restaurant restaurantActual = restaurantRepository.getById(id);
-        if (restaurantActual == null) {
+        final Optional<Restaurant> restaurantActual = restaurantRepository.findById(id);
+        if (restaurantActual.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
-        merge(fields, restaurantActual);
-        return update(id, restaurantActual);
+        merge(fields, restaurantActual.get());
+        return update(id, restaurantActual.get());
     }
 
     private void merge(final Map<String, Object> dataUpdate, final Restaurant restaurantUpdate) {
@@ -90,9 +101,9 @@ public class RestaurantController {
             final Field field = ReflectionUtils.findField(Restaurant.class, property);
             field.setAccessible(true);
 
-            final Object newValue = ReflectionUtils.getField(field, restaurantUpdate);
+            final Object newValue = ReflectionUtils.getField(field, restaurant);
 
-            ReflectionUtils.setField(field, restaurant, newValue);
+            ReflectionUtils.setField(field, restaurantUpdate, newValue);
         });
     }
 
