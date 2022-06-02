@@ -27,7 +27,6 @@ public class RestaurantController {
     @Autowired
     private RestaurantRepository restaurantRepository;
 
-
     @Autowired
     private RestaurantService restaurantService;
 

@@ -24,9 +24,9 @@ public class KitchenService {
     public void delete(final Long id) {
         try {
             kitchenRepository.deleteById(id);
-        } catch (EmptyResultDataAccessException e) {
+        } catch (final EmptyResultDataAccessException e) {
             throw new EntityNotFound(String.format("There is no Kitchen with code %d", id));
-        } catch (DataIntegrityViolationException e) {
+        } catch (final DataIntegrityViolationException e) {
             throw new EntityIsUsed(String.format("Kitchen cod %d can not be removed, because is used", id));
         }
     }

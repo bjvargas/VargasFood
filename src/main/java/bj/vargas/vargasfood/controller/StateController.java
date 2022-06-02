@@ -18,7 +18,7 @@ public class StateController {
 
     @GetMapping
     public List<State> listRest() {
-        return stateRepository.list();
+        return stateRepository.findAll();
     }
 
 }

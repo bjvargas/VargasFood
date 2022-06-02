@@ -16,9 +16,9 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Optional;
 
-import static org.springframework.http.HttpStatus.CONFLICT;
-import static org.springframework.http.HttpStatus.CREATED;
+import static org.springframework.http.HttpStatus.*;
 
 @RestController
 @RequestMapping("/kitchens")
@@ -36,12 +36,9 @@ public class KitchenController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Kitchen> getKitchenRest(@PathVariable Long id) {
-        final Kitchen kitchen = kitchenRepository.getById(id);
-        if (kitchen != null) {
-            return ResponseEntity.ok(kitchen);
-        }
-        return ResponseEntity.notFound().build();
+    public ResponseEntity<Kitchen> getKitchenRest(@PathVariable final Long id) {
+        final Optional<Kitchen> kitchen = kitchenRepository.findById(id);
+        return kitchen.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @PostMapping
@@ -53,25 +50,25 @@ public class KitchenController {
     @PutMapping("/{id}")
     public ResponseEntity<Kitchen> updateRest(@PathVariable final Long id,
                                               @RequestBody final Kitchen kitchen) {
-        final Kitchen kitchenActual = kitchenRepository.getById(id);
+        final Optional<Kitchen> kitchenActual = kitchenRepository.findById(id);
 
-        if (kitchen != null) {
-            BeanUtils.copyProperties(kitchen, kitchenActual, "id");
-            kitchenRepository.save(kitchenActual);
-            return ResponseEntity.ok(kitchenActual);
+        if (kitchenActual.isPresent()) {
+            BeanUtils.copyProperties(kitchen, kitchenActual.get(), "id");
+            final Kitchen savedKitchen = kitchenRepository.save(kitchenActual.get());
+            return ResponseEntity.ok(savedKitchen);
         }
         return ResponseEntity.notFound().build();
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Kitchen> deleteRest(@PathVariable final Long id) {
+    public ResponseEntity<?> deleteRest(@PathVariable final Long id) {
         try {
             kitchenService.delete(id);
             return ResponseEntity.noContent().build();
         } catch (final EntityNotFound e) {
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.status(NOT_FOUND).body(e.getMessage());
         } catch (final EntityIsUsed e) {
-            return ResponseEntity.status(CONFLICT).build();
+            return ResponseEntity.status(CONFLICT).body(e.getMessage());
         }
     }
 
