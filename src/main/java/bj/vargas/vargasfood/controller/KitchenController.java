@@ -41,6 +41,15 @@ public class KitchenController {
         return kitchen.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
+    @GetMapping("/name/{name}")
+    public ResponseEntity<List<Kitchen>> getKitchensByName(@PathVariable final String name) {
+        final List<Kitchen> kitchens = kitchenRepository.name(name);
+        if(kitchens.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok().body(kitchens);
+    }
+
     @PostMapping
     @ResponseStatus(CREATED)
     public Kitchen createRest(@RequestBody final Kitchen kitchen) {
