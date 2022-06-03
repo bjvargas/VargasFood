@@ -17,6 +17,7 @@ import org.springframework.util.ReflectionUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.lang.reflect.Field;
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -41,6 +42,20 @@ public class RestaurantController {
     public ResponseEntity<Restaurant> getRestaurant(@PathVariable final Long id) {
         final Optional<Restaurant> restaurant = restaurantRepository.findById(id);
         return restaurant.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+    @GetMapping("/between/{shippingFeeInitial}/{shippingFeeFinal}")
+    public List<Restaurant> getRestaurantListBetween(@PathVariable final BigDecimal shippingFeeInitial,
+                                                    @PathVariable final BigDecimal shippingFeeFinal) {
+        return restaurantRepository
+                .findByShippingFeeBetween(shippingFeeInitial, shippingFeeFinal);
+    }
+
+    @GetMapping("/betweenName/{name}/{id}")
+    public List<Restaurant> getRestaurantByNameAndKitchen(@PathVariable final String name,
+                                                     @PathVariable final Long id) {
+        return restaurantRepository
+                .findByNameContainingAndKitchenId(name, id);
     }
 
     @PostMapping

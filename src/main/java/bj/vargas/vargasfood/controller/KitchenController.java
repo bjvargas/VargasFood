@@ -50,6 +50,15 @@ public class KitchenController {
         return ResponseEntity.ok().body(kitchens);
     }
 
+    @GetMapping("/nameAll")
+    public ResponseEntity<List<Kitchen>> getKitchensByNameContaining(final String name) {
+        final List<Kitchen> kitchens = kitchenRepository.findByNameContaining(name);
+        if(kitchens.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok().body(kitchens);
+    }
+
     @PostMapping
     @ResponseStatus(CREATED)
     public Kitchen createRest(@RequestBody final Kitchen kitchen) {
