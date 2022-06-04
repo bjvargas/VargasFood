@@ -8,6 +8,8 @@ import bj.vargas.vargasfood.domain.repository.KitchenRepository;
 import bj.vargas.vargasfood.domain.repository.RestaurantRepository;
 import bj.vargas.vargasfood.domain.service.KitchenService;
 import bj.vargas.vargasfood.domain.service.RestaurantService;
+import bj.vargas.vargasfood.infraestructure.specification.RestaurantFreeFeeSpec;
+import bj.vargas.vargasfood.infraestructure.specification.RestaurantLikelyNameSpec;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +24,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import static bj.vargas.vargasfood.infraestructure.specification.RestaurantSpecs.feeFree;
+import static bj.vargas.vargasfood.infraestructure.specification.RestaurantSpecs.likelyName;
 import static org.springframework.http.HttpStatus.*;
 
 @RestController
@@ -56,6 +60,69 @@ public class RestaurantController {
                                                      @PathVariable final Long id) {
         return restaurantRepository
                 .findByNameContainingAndKitchenId(name, id);
+    }
+
+    @GetMapping("/firstByName/{name}")
+    public Optional<Restaurant> getFirstRestaurantByName(@PathVariable final String name) {
+        return restaurantRepository
+                .findFirstRestaurantByNameContaining(name);
+    }
+
+    @GetMapping("/top2ByName/{name}")
+    public List<Restaurant> getTop2ByName(@PathVariable final String name) {
+        return restaurantRepository
+                .findTop2ByNameContaining(name);
+    }
+
+    @GetMapping("/countKitchen/{id}")
+    public int countKitchen(@PathVariable final Long id) {
+        return restaurantRepository
+                .countByKitchenId(id);
+    }
+
+
+    @GetMapping("/exists/{name}")
+    public boolean existsByName(@PathVariable final String name) {
+        return restaurantRepository
+                .existsByName(name);
+    }
+
+    @GetMapping("/testSDJ/{name}/{shippingFeeInitial}/{shippingFeeFinal}")
+    public List<Restaurant> getBetweenSDJ(@PathVariable final String name,
+                                          @PathVariable final BigDecimal shippingFeeInitial,
+                                          @PathVariable final BigDecimal shippingFeeFinal) {
+        return restaurantRepository
+                .find(name, shippingFeeInitial, shippingFeeFinal);
+    }
+
+    @GetMapping("/testCriteriaQueryAPI/{name}/{shippingFeeInitial}/{shippingFeeFinal}")
+    public List<Restaurant> getBetweenCriteriaQueryAPI(@PathVariable final String name,
+                                          @PathVariable final BigDecimal shippingFeeInitial,
+                                          @PathVariable final BigDecimal shippingFeeFinal) {
+        return restaurantRepository
+                .findUsingCriteriaAPI(name, shippingFeeInitial, shippingFeeFinal);
+    }
+
+    @GetMapping("/testSpec/{name}/")
+    public List<Restaurant> getUsingSpec(@PathVariable final String name) {
+        var freeFee = new RestaurantFreeFeeSpec();
+        var likelyName = new RestaurantLikelyNameSpec(name);
+
+
+        return restaurantRepository
+                .findAll(freeFee.and(likelyName));
+    }
+
+    @GetMapping("/testSpecElegant/{name}/")
+    public List<Restaurant> getUsingSpecElegant(@PathVariable final String name) {
+
+        return restaurantRepository
+                .findAll(feeFree().and(likelyName(name)));
+    }
+
+    @GetMapping("/testCustomRepository/")
+    public Optional<Restaurant> findUsingCustomRepository() {
+        return restaurantRepository.findFirst();
     }
 
     @PostMapping
