@@ -103,17 +103,17 @@ public class RestaurantController {
                 .findUsingCriteriaAPI(name, shippingFeeInitial, shippingFeeFinal);
     }
 
-    @GetMapping("/testSpec/{name}/")
+    @GetMapping("/testSpec/{name}")
     public List<Restaurant> getUsingSpec(@PathVariable final String name) {
-        var freeFee = new RestaurantFreeFeeSpec();
-        var likelyName = new RestaurantLikelyNameSpec(name);
+        final var freeFee = new RestaurantFreeFeeSpec();
+        final var likelyName = new RestaurantLikelyNameSpec(name);
 
 
         return restaurantRepository
                 .findAll(freeFee.and(likelyName));
     }
 
-    @GetMapping("/testSpecElegant/{name}/")
+    @GetMapping("/testSpecElegant/{name}")
     public List<Restaurant> getUsingSpecElegant(@PathVariable final String name) {
 
         return restaurantRepository
@@ -141,7 +141,7 @@ public class RestaurantController {
         final Optional<Restaurant> restaurantActual = restaurantRepository.findById(id);
 
         if (restaurantActual.isPresent()) {
-            BeanUtils.copyProperties(restaurant, restaurantActual.get(), "id");
+            BeanUtils.copyProperties(restaurant, restaurantActual.get(), "id", "paymentList");
             try {
                 final Restaurant savedRestaurant = restaurantRepository.save(restaurantActual.get());
                 return ResponseEntity.ok(savedRestaurant);
