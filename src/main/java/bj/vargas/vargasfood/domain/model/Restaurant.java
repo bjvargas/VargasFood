@@ -5,6 +5,7 @@ import lombok.EqualsAndHashCode;
 import net.bytebuddy.agent.builder.AgentBuilder;
 
 import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -40,5 +41,8 @@ public class Restaurant {
             joinColumns = @JoinColumn(name = "restaurant_id"),
             inverseJoinColumns = @JoinColumn(name = "payment_id"))
     List<Payment> paymentList = new ArrayList<>();
+
+    @Embedded
+    private Address address;
 
 }
