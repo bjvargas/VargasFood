@@ -11,13 +11,13 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
-public class Group {
+public class CollectionGroup {
 
     @EqualsAndHashCode.Include
     @Id
@@ -28,9 +28,9 @@ public class Group {
     private String name;
 
     @ManyToMany
-    @JoinTable(name = "group_permission",
-            joinColumns = @JoinColumn(name = "group_id"),
+    @JoinTable(name = "collection_group_permission",
+            joinColumns = @JoinColumn(name = "collection_group_id"),
             inverseJoinColumns = @JoinColumn(name = "permission_id"))
-    private List<Permission> permissionList;
+    private List<Permission> permissionList = new ArrayList<>();
 
 }

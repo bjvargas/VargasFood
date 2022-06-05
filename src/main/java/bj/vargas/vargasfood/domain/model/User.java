@@ -13,6 +13,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -39,8 +40,8 @@ public class User {
     private LocalDateTime registerDate;
 
     @ManyToMany
-    @JoinTable(name = "user_group",
+    @JoinTable(name = "user_collection_group",
             joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "group_id"))
-    private List<Group> groupList;
+            inverseJoinColumns = @JoinColumn(name = "collection_group_id"))
+    private List<CollectionGroup> groupList = new ArrayList<>();
 }
