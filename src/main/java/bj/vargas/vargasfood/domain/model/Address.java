@@ -11,7 +11,7 @@ import javax.persistence.ManyToOne;
 @Embeddable
 public class Address {
 
-    @Column(name = "address_zipCode")
+    @Column(name = "address_zip_code")
     private String zipCode;
 
     @Column(name = "address_road")

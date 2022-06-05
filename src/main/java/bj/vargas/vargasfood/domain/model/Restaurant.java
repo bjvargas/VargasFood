@@ -1,5 +1,6 @@
 package bj.vargas.vargasfood.domain.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import net.bytebuddy.agent.builder.AgentBuilder;
@@ -36,12 +37,14 @@ public class Restaurant {
     @ManyToOne
     private Kitchen kitchen;
 
+    @JsonIgnore
     @ManyToMany
     @JoinTable(name = "restaurant_payment",
             joinColumns = @JoinColumn(name = "restaurant_id"),
             inverseJoinColumns = @JoinColumn(name = "payment_id"))
     List<Payment> paymentList = new ArrayList<>();
 
+    @JsonIgnore
     @Embedded
     private Address address;
 
