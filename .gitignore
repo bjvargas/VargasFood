@@ -7,3 +7,4 @@
 /.idea/.gitignore
 /target/*
 /.idea/inspectionProfiles/Project_Default.xml
+/.idea/sqldialects.xml
