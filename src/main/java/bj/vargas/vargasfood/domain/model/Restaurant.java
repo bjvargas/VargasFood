@@ -45,6 +45,7 @@ public class Restaurant {
     @ManyToOne//(fetch = FetchType.LAZY)
     private Kitchen kitchen;
 
+    @JsonIgnore
     @ManyToMany
     @JoinTable(name = "restaurant_payment",
             joinColumns = @JoinColumn(name = "restaurant_id"),
