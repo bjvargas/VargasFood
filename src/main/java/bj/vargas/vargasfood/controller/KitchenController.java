@@ -7,6 +7,7 @@ import bj.vargas.vargasfood.domain.repository.KitchenRepository;
 import bj.vargas.vargasfood.domain.service.KitchenService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -79,15 +80,9 @@ public class KitchenController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteRest(@PathVariable final Long id) {
-        try {
+    @ResponseStatus(NO_CONTENT)
+    public void deleteRest(@PathVariable final Long id) {
             kitchenService.delete(id);
-            return ResponseEntity.noContent().build();
-        } catch (final EntityNotFound e) {
-            return ResponseEntity.status(NOT_FOUND).body(e.getMessage());
-        } catch (final EntityIsUsed e) {
-            return ResponseEntity.status(CONFLICT).body(e.getMessage());
-        }
     }
 
     public List<Kitchen> list() {
